@@ -1,0 +1,6 @@
+labels:
+  - name: pii
+    transform: anonymize
+endpoints:
+  - path: /event-request
+    users: .*
