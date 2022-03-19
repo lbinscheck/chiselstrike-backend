@@ -7,13 +7,13 @@ async function createEventRequest(req) {
     const authUser = await loggedInUser();
     const payload: EventRequest = await req.json();
 
-    const userId = authUser.id;
+    const user = authUser;
     const events = payload["events"];
     const email = payload["email"];
     const groupSize = payload["groupSize"];
     const startDate = payload["startDate"];
 
-    const eventRequest = EventRequest.build({ userId, events, email, groupSize, startDate });
+    const eventRequest = EventRequest.build({ user, events, email, groupSize, startDate });
     await eventRequest.save();
     return responseFromJson(eventRequest.id);
   } catch (error) {
@@ -21,11 +21,13 @@ async function createEventRequest(req) {
   }
 }
 
-async function getEventsByUserId() {
+async function getEventsByUser() {
   try {
-    const authUser = await loggedInUser();
-    const events = await EventRequest.findMany({ userId: authUser.id });
-    return responseFromJson(events);
+    const user = await loggedInUser();
+    const eventRequestsByUser = await EventRequest.cursor()
+      .filter((eventRequest: EventRequest) => eventRequest.user.id === user.id)
+      .toArray();
+    return responseFromJson(eventRequestsByUser);
   } catch (error) {
     return new Response("Internal error", { status: 500 });
   }
@@ -35,7 +37,7 @@ export default async function chisel(req) {
   if (req.method === "POST") {
     return await createEventRequest(req);
   } else if (req.method === "GET") {
-    return await getEventsByUserId();
+    return await getEventsByUser();
   } else {
     return new Response("Wrong method", { status: 405 });
   }

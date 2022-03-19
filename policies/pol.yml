@@ -1,6 +1,8 @@
 labels:
   - name: pii
     transform: anonymize
+  - name: protect
+    transform: match_login
 endpoints:
   - path: /event-request
     users: .*

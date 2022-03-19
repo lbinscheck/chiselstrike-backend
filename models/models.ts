@@ -1,9 +1,9 @@
-import { ChiselEntity, labels } from "@chiselstrike/api";
+import { ChiselEntity, labels, OAuthUser } from "@chiselstrike/api";
 
 export class EventRequest extends ChiselEntity {
-  userId: string;
-  events: string;
+  @labels("protect") user: OAuthUser;
   @labels("pii") email: string;
+  events: string;
   groupSize: number;
   startDate: number;
   accepted: boolean = false;
