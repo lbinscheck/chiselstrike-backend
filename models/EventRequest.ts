@@ -8,8 +8,3 @@ export class EventRequest extends ChiselEntity {
   startDate: number;
   accepted: boolean = false;
 }
-
-export class BlogComment extends ChiselEntity {
-  content: string = "";
-  by: string = "";
-}

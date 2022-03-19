@@ -1,6 +1,6 @@
 import { loggedInUser, responseFromJson } from "@chiselstrike/api";
 
-import { EventRequest } from "../models/models";
+import { EventRequest } from "../models/EventRequest";
 
 async function createEventRequest(req) {
   try {
